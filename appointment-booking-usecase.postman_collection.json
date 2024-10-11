@@ -1,0 +1,237 @@
+{
+	"info": {
+		"_postman_id": "384e0f79-c43f-4505-b023-149cbd909b73",
+		"name": "appointment-booking-usecase",
+		"description": "1. Once the '**search slot**' API is invoked, it will output 15 available slots.\n    \n2. A randomly selected slotId, its start time and end time will be saved to the Collection variables.\n    \n3. Once the 'create appointment' API is invoked, these values will be automatically replaced.\n    \n\nNote: In case you get an error from Cerner side (For some slot ids we have a known issue from Cerner that it provides '_status code: 422, Unprocessable entitty_' error. If that occurres, invoke the 'search slot' request and copy and paste slotId, startTime, endTime values to the Collection Variables from the payaload of a selected slot.\n\n4\\. To run as the collection, right-click on aggregate-service folder and select run folder. If the particular error occurres try re-running or change the date range of 'search slot' request and rerun.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2350060"
+	},
+	"item": [
+		{
+			"name": "aggregate-service",
+			"item": [
+				{
+					"name": "search practitioner",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/fhir/r4/Practitioner?family=Applegate&given=Christina",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"fhir",
+								"r4",
+								"Practitioner"
+							],
+							"query": [
+								{
+									"key": "family",
+									"value": "Applegate"
+								},
+								{
+									"key": "given",
+									"value": "Christina"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search slot",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"if (pm.response.code == 200){",
+									"    var k = Math.floor(Math.random() * (14 - 3 + 1)) + 3;",
+									"    console.log(k);",
+									"",
+									"    var jsonData = pm.response.json();",
+									"    var slotId = jsonData.entry[k].resource.id;",
+									"    pm.collectionVariables.set(\"slotId\", slotId);",
+									"",
+									"    var startTime = jsonData.entry[k].resource.start;",
+									"    pm.collectionVariables.set(\"startTime\", startTime);",
+									"",
+									"    var endTime = jsonData.entry[k].resource.end;",
+									"    pm.collectionVariables.set(\"endTime\", endTime);",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/fhir/r4/Slot?startDate=2024-12-24&practitioner=593923&endDate=2024-12-24",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"fhir",
+								"r4",
+								"Slot"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2024-12-24"
+								},
+								{
+									"key": "practitioner",
+									"value": "593923"
+								},
+								{
+									"key": "endDate",
+									"value": "2024-12-24"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create appointment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/fhir+json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"resourceType\": \"Appointment\",\n    \"status\": \"booked\",\n    \"slot\": [\n        {\n            \"reference\": \"Slot/{{slotId}}\"\n        }\n    ],\n    \"start\": \"{{startTime}}\",\n    \"end\": \"{{endTime}}\",\n    \"participant\": [\n        {\n            \"actor\": {\n                \"reference\": \"Patient/12724066\"\n            },\n            \"status\": \"accepted\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8083/fhir/r4/Appointment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8083",
+							"path": [
+								"fhir",
+								"r4",
+								"Appointment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get location",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8084/fhir/r4/Location/32216049",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8084",
+							"path": [
+								"fhir",
+								"r4",
+								"Location",
+								"32216049"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "startTime",
+			"value": ""
+		},
+		{
+			"key": "endTime",
+			"value": ""
+		},
+		{
+			"key": "slotId",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

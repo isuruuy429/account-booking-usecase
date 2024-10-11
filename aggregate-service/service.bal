@@ -87,7 +87,14 @@ service / on new fhirr4:Listener(8082, slotApiConfig) {
         if queryParameters != "?" {
             queryParameters += "&";
         }
+
         queryParameters += string `service-type=https://fhir.cerner.com/ec2458f2-1e24-41c8-b71b-0e701af7583d/codeSet/14249|4047611`;
+
+        int _count = 15; 
+        if queryParameters != "?" {
+            queryParameters += "&";
+        }
+        queryParameters += string `_count=${_count}`;
 
         http:Client slotClient = check new (slotSearchUrl);
         http:Response slotResponse = check slotClient->get(queryParameters);
