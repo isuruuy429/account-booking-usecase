@@ -110,7 +110,7 @@ function App() {
       participant: [
         {
           actor: {
-            reference: 'Patient/12724066', // Hardcoded for now, replace with actual patient ID if needed
+            reference: 'Patient/12724066', // Hardcoded for now
           },
           status: 'accepted',
         }
