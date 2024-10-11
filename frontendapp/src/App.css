@@ -1,0 +1,114 @@
+.container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+h1 {
+  font-size: 24px;
+  color: black;
+}
+
+.input-container {
+  margin: 20px 0;
+}
+
+input {
+  padding: 10px;
+  margin: 0 10px;
+  font-size: 16px;
+  width: 200px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.results, .available-slots {
+  margin-top: 20px;
+}
+
+.doctor-list {
+  display: flex;
+  justify-content: center; /* Center the doctor result */
+}
+
+.doctor-box {
+  background-color: #f9f9f9; /* Lighter background */
+  border: 1px solid #007bff; /* Blue border */
+  border-radius: 6px;
+  padding: 15px;
+  margin: 10px;
+  width: 250px; /* Set a fixed width for doctor box */
+  text-align: center;
+  cursor: pointer;
+  font-size: 18px; /* Adjust font size for emphasis */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.doctor-box:hover {
+  background-color: #f1f1f1;
+}
+
+.doctor-box.selected {
+  background-color: #d1e7dd; /* Light green background when selected */
+  border-color: #28a745; /* Green border for selected doctor */
+}
+
+.slot-list {
+  display: grid;
+  grid-template-columns: repeat(3, 250px); /* Ensure 3 equal columns */
+  justify-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.slot-box {
+  background-color: #f9f9f9; /* Lighter background for slot boxes */
+  border: 1px solid #007bff; /* Thin border for slots */
+  border-radius: 6px; /* Slightly rounded corners */
+  padding: 10px; /* Reduced padding for a compact look */
+  text-align: center;
+  cursor: pointer;
+  font-size: 14px; /* Adjust font size for compact look */
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Light shadow for better visuals */
+}
+
+.slot-box.selected-slot {
+  background-color: #d1e7dd; /* Light green for selected slot */
+  border-color: #28a745; /* Green border for selected slot */
+}
+
+.slot-box:hover {
+  background-color: #f1f1f1;
+}
+
+.create-appointment {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.create-appointment:hover {
+  background-color: #218838;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
