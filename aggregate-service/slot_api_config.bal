@@ -103,6 +103,7 @@ final r4:ResourceAPIConfig slotApiConfig = {
         {
         name: "startDate",
         active: true
+
     }, 
         {
         name: "endDate",

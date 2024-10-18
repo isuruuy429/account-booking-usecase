@@ -11,6 +11,15 @@ function App() {
   const [locations, setLocations] = useState({});
   const [selectedSlot, setSelectedSlot] = useState(null); // Store the selected slot
 
+  // Predefined doctor names array for dropdown
+  const predefinedDoctors = [
+    { name: 'Dr John Doe', firstName: 'John', lastName: 'Doe' },
+    { name: 'Dr Jane Smith', firstName: 'Jane', lastName: 'Smith' },
+    { name: 'Dr William Johnson', firstName: 'William', lastName: 'Johnson' },
+    { name: 'Dr Christina Applegate', firstName: 'Christina', lastName: 'Applegate' }
+  ];
+
+  // Handle doctor search based on name (fetches doctor list from API)
   const handleSearch = async () => {
     const url = `http://localhost:8081/fhir/r4/Practitioner?family=${lastName}&given=${firstName}`;
     try {
@@ -157,21 +166,22 @@ function App() {
   return (
     <div className="container">
       <h1>Book an Appointment</h1>
+      
       <div className="input-container">
-        <input
-          type="text"
-          placeholder="First name"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Last name"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
+        <select onChange={(e) => {
+          const selected = predefinedDoctors.find(doc => doc.name === e.target.value);
+          setFirstName(selected.firstName);
+          setLastName(selected.lastName);
+        }}>
+          <option value="">Select a Predefined Doctor</option>
+          {predefinedDoctors.map((doctor, index) => (
+            <option key={index} value={doctor.name}>
+              {doctor.name}
+            </option>
+          ))}
+        </select>
+        <button onClick={handleSearch}>Search Doctor</button>
       </div>
-      <button onClick={handleSearch}>Search Doctor</button>
 
       {doctorNames.length > 0 && (
         <div className="results">
