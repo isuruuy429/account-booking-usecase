@@ -19,29 +19,37 @@ public type Location international401:Location;
 
 public type Appointment international401:Appointment;
 
-string practitionerBaseUrl = "http://localhost:9092/fhir/r4";
-string slotBaseUrl = "http://localhost:9098/fhir/r4";
-string locationBaseUrl = "http://localhost:9095/fhir/r4";
-string appointmentBaseUrl = "http://localhost:9099/fhir/r4";
+string baseUrl = "https://c32618cf-389d-44f1-93ee-b67a3468aae3-dev.e1-us-east-azure.choreoapis.dev/cmsdemosetups";
+
+string practitoinerChoreoUrl = string `${baseUrl}/admincerner/v1.0/fhir/r4`;
+string slotChoreoUrl = string `${baseUrl}/cernerworkflow/cerner-fhir-slot-api-2ce/v1.0/fhir/r4`;
+string locationChoreoUrl = string `${baseUrl}/admincerner/cerner-fhir-location-api-20c/v1.0/fhir/r4`;
+string appointmentChoreoUrl = string `${baseUrl}/cernerworkflow/v1.0/fhir/r4`;
+
+
+// string practitionerBaseUrl = "http://localhost:9092/fhir/r4";
+// string slotBaseUrl = "http://localhost:9098/fhir/r4";
+// string locationBaseUrl = "http://localhost:9095/fhir/r4";
+// string appointmentBaseUrl = "http://localhost:9099/fhir/r4";
 
 // Create a FHIR client configs for practitioner ,slot, location and appointment
 fhirClient:FHIRConnectorConfig practitionerConfig = {
-    baseURL: practitionerBaseUrl,
+    baseURL: practitoinerChoreoUrl,
     mimeType: fhirClient:FHIR_JSON
 };
 
 fhirClient:FHIRConnectorConfig slotConfig = {
-    baseURL: slotBaseUrl,
+    baseURL: slotChoreoUrl,
     mimeType: fhirClient:FHIR_JSON
 };
 
 fhirClient:FHIRConnectorConfig locationConfig = {
-    baseURL: locationBaseUrl,
+    baseURL: locationChoreoUrl,
     mimeType: fhirClient:FHIR_JSON
 };
 
 fhirClient:FHIRConnectorConfig appointmentConfig = {
-    baseURL: appointmentBaseUrl,
+    baseURL: appointmentChoreoUrl,
     mimeType: fhirClient:FHIR_JSON
 };
 
